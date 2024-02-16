@@ -4,6 +4,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { computedAsync } from 'ngxtension/computed-async';
 import { DecimalPipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: 'app-transactions-section',
@@ -19,7 +20,7 @@ import { DecimalPipe } from '@angular/common';
 
             @if (transactions()) {
                 <div class="flex justify-center items-center gap-2">
-                    <p class="text-xl"> {{ transactions()?.timestamp }} </p>
+                    <p class="text-xl"> {{ transactions()?.timestamp | date}} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.sender }} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.receiver }} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.amount | number }} </p>
@@ -27,7 +28,7 @@ import { DecimalPipe } from '@angular/common';
             }
         </section>
      `,
-    imports: [DecimalPipe],
+    imports: [DecimalPipe, DatePipe],
     standalone: true,
 })
 export class TransactionsSectionComponent {
