@@ -20,7 +20,7 @@ import { DatePipe } from "@angular/common";
 
             @if (transactions()) {
                 <div class="flex justify-center items-center gap-2">
-                    <p class="text-xl"> {{ transactions()?.timestamp | date}} </p>
+                    <p class="text-xl"> {{ transactions()?.timestamp | date }} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.sender }} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.receiver }} </p>
                     <p class="text-xl"> {{ transactions()?.actions?.info?.amount | number }} </p>
