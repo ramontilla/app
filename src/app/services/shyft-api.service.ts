@@ -27,19 +27,19 @@ export class ShyftApiService {
             .pipe(map(({ result }) => result));
     }
 
-    getTransactions(publicKey1: string | null | undefined) {
-        if (!publicKey1) {
+    getTransactions(publicKey: string | null | undefined) {
+        if (!publicKey) {
             return of(null);
         }
 
         const url = new URL('https://api.shyft.to/sol/v1/transaction/history');
 
         url.searchParams.append('network', 'mainnet-beta');
-        url.searchParams.append('account', publicKey1);
         url.searchParams.append('tx_num', '5');
+        url.searchParams.append('account', publicKey);
 
         return this._httpClient
-            .get<{ result: { timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } } } }>(
+            .get<{ result: { timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } }[] }[] }>(
                 url.toString(),
                 { headers: this._headers }
             )

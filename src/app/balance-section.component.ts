@@ -1,10 +1,9 @@
 import { Component, inject } from "@angular/core";
-import { ShyftApiService } from './services/shyft-api.service';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { computedAsync } from 'ngxtension/computed-async';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { DecimalPipe } from '@angular/common';
-
+import { computedAsync } from 'ngxtension/computed-async';
+import { ShyftApiService } from './services/shyft-api.service';
 @Component({
     selector: 'app-balance-section',
     template: `

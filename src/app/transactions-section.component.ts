@@ -1,35 +1,47 @@
 import { Component, inject } from "@angular/core";
-import { ShyftApiService } from './services/shyft-api.service';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatTableModule } from "@angular/material/table";
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { computedAsync } from 'ngxtension/computed-async';
-import { DecimalPipe } from '@angular/common';
-import { DatePipe } from "@angular/common";
-
+import { ShyftApiService } from './services/shyft-api.service';
 @Component({
     selector: 'app-transactions-section',
+    imports: [MatTableModule],
+    standalone: true,
     template: `
         <section class="px-16 py-24">
-            <h2 class="text-center text-3xl">Transactions</h2>
-            <ul class="flex justify-center items-center gap-16">
-                <li class="text-xl">Date</li>
-                <li class="text-xl">Sender</li>
-                <li class="text-xl">Receiver</li>
-                <li class="text-xl">Amount</li>
-            </ul>
+            <h2 class="text-center text-3xl">Transacciones</h2>
 
-            @if (transactions()) {
-                <div class="flex justify-center items-center gap-2">
-                    <p class="text-xl"> {{ transactions()?.timestamp | date }} </p>
-                    <p class="text-xl"> {{ transactions()?.actions?.info?.sender }} </p>
-                    <p class="text-xl"> {{ transactions()?.actions?.info?.receiver }} </p>
-                    <p class="text-xl"> {{ transactions()?.actions?.info?.amount | number }} </p>
-                </div>
+            @if (transactions()?.length === 0) {
+                <p class="text-center">No hay transacciones.</p>
+            } @else {
+                <table mat-table [dataSource]="transactions() ?? []">
+                    <ng-container matColumnDef="timestamp">
+                        <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.timestamp }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sender">
+                        <th mat-header-cell *matHeaderCellDef>Emisor</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.sender }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="receiver">
+                        <th mat-header-cell *matHeaderCellDef>Destino</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.receiver }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef>Monto</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.amount }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
             }
         </section>
      `,
-    imports: [DecimalPipe, DatePipe],
-    standalone: true,
 })
 export class TransactionsSectionComponent {
     private readonly _shyftApiService = inject(ShyftApiService);
@@ -40,4 +52,6 @@ export class TransactionsSectionComponent {
       () => this._shyftApiService.getTransactions(this._publicKey()?.toBase58()),
       { requireSync: false },
     );
+
+    displayedColumns: string[] = ['timestamp', 'sender', 'receiver', 'amount'];
 }
