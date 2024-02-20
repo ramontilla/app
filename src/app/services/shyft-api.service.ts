@@ -29,7 +29,7 @@ export class ShyftApiService {
 
     getTransactions(publicKey: string | null | undefined) {
         if (!publicKey) {
-            return of(null);
+            return of([]);
         }
 
         const url = new URL('https://api.shyft.to/sol/v1/transaction/history');
@@ -39,7 +39,7 @@ export class ShyftApiService {
         url.searchParams.append('account', publicKey);
 
         return this._httpClient
-            .get<{ result: { timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } }[] }[] }>(
+            .get<{ result: { type: string; timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } }[] }[] }>(
                 url.toString(),
                 { headers: this._headers }
             )

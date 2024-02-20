@@ -16,6 +16,10 @@ import { ShyftApiService } from './services/shyft-api.service';
                 <p class="text-center">No hay transacciones.</p>
             } @else {
                 <table mat-table [dataSource]="transactions() ?? []">
+                    <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.type }}</td>
+                    </ng-container>
                     <ng-container matColumnDef="timestamp">
                         <th mat-header-cell *matHeaderCellDef>Timestamp</th>
                         <td mat-cell *matCellDef="let transaction">{{ transaction.timestamp }}</td>
@@ -53,5 +57,5 @@ export class TransactionsSectionComponent {
       { requireSync: false },
     );
 
-    displayedColumns: string[] = ['timestamp', 'sender', 'receiver', 'amount'];
+    displayedColumns: string[] = ['type', 'timestamp', 'sender', 'receiver', 'amount'];
 }
