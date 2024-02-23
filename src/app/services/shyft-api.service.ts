@@ -39,7 +39,7 @@ export class ShyftApiService {
         url.searchParams.append('account', publicKey);
 
         return this._httpClient
-            .get<{ result: { type: string; timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } }[] }[] }>(
+            .get<{ result: { status: string; type: string; timestamp: string; actions: { info: { sender: string, receiver: string, amount: number } }[] }[] }>(
                 url.toString(),
                 { headers: this._headers }
             )

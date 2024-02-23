@@ -9,7 +9,7 @@ import { ShyftApiService } from './services/shyft-api.service';
     imports: [MatTableModule],
     standalone: true,
     template: `
-        <section class="px-16 py-24">
+        <section class="px-4 py-24">
             <h2 class="text-center text-3xl">Transacciones</h2>
 
             @if (transactions()?.length === 0) {
@@ -17,8 +17,12 @@ import { ShyftApiService } from './services/shyft-api.service';
             } @else {
                 <table mat-table [dataSource]="transactions() ?? []">
                     <ng-container matColumnDef="type">
-                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                        <th mat-header-cell *matHeaderCellDef>Type</th>
                         <td mat-cell *matCellDef="let transaction">{{ transaction.type }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let transaction">{{ transaction.status }}</td>
                     </ng-container>
                     <ng-container matColumnDef="timestamp">
                         <th mat-header-cell *matHeaderCellDef>Timestamp</th>
@@ -26,17 +30,17 @@ import { ShyftApiService } from './services/shyft-api.service';
                     </ng-container>
 
                     <ng-container matColumnDef="sender">
-                        <th mat-header-cell *matHeaderCellDef>Emisor</th>
+                        <th mat-header-cell *matHeaderCellDef>Sender</th>
                         <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.sender }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="receiver">
-                        <th mat-header-cell *matHeaderCellDef>Destino</th>
+                        <th mat-header-cell *matHeaderCellDef>Receiver</th>
                         <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.receiver }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="amount">
-                        <th mat-header-cell *matHeaderCellDef>Monto</th>
+                        <th mat-header-cell *matHeaderCellDef>Amount</th>
                         <td mat-cell *matCellDef="let transaction">{{ transaction.actions[0].info.amount }}</td>
                     </ng-container>
 
@@ -57,5 +61,5 @@ export class TransactionsSectionComponent {
       { requireSync: false },
     );
 
-    displayedColumns: string[] = ['type', 'timestamp', 'sender', 'receiver', 'amount'];
+    displayedColumns: string[] = ['type', 'status', 'timestamp', 'sender', 'receiver', 'amount'];
 }
